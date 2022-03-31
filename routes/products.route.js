@@ -13,8 +13,8 @@ router.post(
   product_controller.product_create_post
 );
 
-// router.param('productId', product_controller.product_find_list_param);
+router.param('productId', product_controller.product_find_list_param);
 
-// router.get('/:productId', product_controller.product_detail_get);
+router.get('/:productId', product_controller.product_detail_get);
 
 module.exports = router;

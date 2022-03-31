@@ -41,36 +41,36 @@ exports.product_create_post = async (req, res) => {
   }
 };
 
-// exports.product_find_list_param = async (req, res, next, id) => {
-//   try {
-//     const product = await Product.findById(id);
+exports.product_find_list_param = async (req, res, next, id) => {
+  try {
+    const product = await Product.findById(id);
 
-//     if (!product) {
-//       return res.status(404).json({
-//         title: 'Find Product',
-//         success: false,
-//         message: 'Product not found by this Id',
-//       });
-//     }
+    if (!product) {
+      return res.status(404).json({
+        title: 'Find Product',
+        success: false,
+        message: 'Product not found by this Id',
+      });
+    }
 
-//     req.product = product;
-//     next();
-//   } catch (err) {
-//     res.status(500).json({
-//       title: 'Find Product',
-//       success: false,
-//       message: 'Error while retrieving product',
-//     });
-//   }
-// };
+    req.product = product;
+    next();
+  } catch (err) {
+    res.status(500).json({
+      title: 'Find Product',
+      success: false,
+      message: 'Error while retrieving product',
+    });
+  }
+};
 
-// exports.product_detail_get = (req, res) => {
-//   let { product } = req;
+exports.product_detail_get = (req, res) => {
+  let { product } = req;
 
-//   res.status(200).json({
-//     title: 'Product Detail',
-//     success: true,
-//     message: 'Product detail is fetched successfully',
-//     product: product,
-//   });
-// };
+  res.status(200).json({
+    title: 'Product Detail',
+    success: true,
+    message: 'Product detail is fetched successfully',
+    product: product,
+  });
+};
