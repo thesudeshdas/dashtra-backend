@@ -78,3 +78,13 @@ exports.wishlist_find_user_param = async (req, res, next, id) => {
   }
 };
 
+exports.wishlist_details_user_get = async (req, res) => {
+  let { userWishlist } = req;
+
+  res.status(200).json({
+    title: 'User wishlist',
+    success: true,
+    message: 'User wishlist is here.',
+    wishlist: userWishlist,
+  });
+};
