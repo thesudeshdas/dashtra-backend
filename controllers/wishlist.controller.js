@@ -131,3 +131,43 @@ exports.wishlist_add_product_post = async (req, res) => {
     });
   }
 };
+
+exports.wishlist_remove_product_post = async (req, res) => {
+  const { productId } = req.body;
+  const { userWishlist } = req;
+
+  try {
+    const product = userWishlist.productsList.find(
+      (item) => item.product._id == productId
+    );
+
+    if (!product) {
+      return res.status(409).json({
+        title: 'Remove product from wishlist',
+        success: false,
+        message: 'Product does not exist in wishlist',
+      });
+    }
+
+    const updatedProductsList = userWishlist.productsList.filter(
+      (item) => item.product._id != productId
+    );
+
+    userWishlist.productsList = updatedProductsList;
+
+    const updatedUserWishlist = await userWishlist.save();
+
+    return res.status(200).json({
+      title: 'Remove product from wishlist',
+      success: true,
+      message: 'The product was removed from the wishlist',
+      removedProduct: product,
+    });
+  } catch (error) {
+    res.status(500).json({
+      title: 'Remove product from wishlist',
+      success: false,
+      message: 'Error while removing product from wishlist. ' + err.message,
+    });
+  }
+};
