@@ -21,3 +21,60 @@ exports.wishlist_list_get = async (req, res) => {
     });
   }
 };
+
+exports.wishlist_add_post = async (req, res) => {
+  try {
+    const newWishlist = new Wishlist(req.body);
+    const addedWishlist = await newWishlist.save();
+
+    res.status(200).json({
+      title: 'Add Wishlist',
+      success: true,
+      message: 'New Wishlist was created successfully',
+      newWishlist,
+    });
+  } catch (error) {
+    res.status(500).json({
+      title: 'Add Wishlist',
+      success: false,
+      message: 'Uh Oh. Error while adding wishlist' + error.message,
+    });
+  }
+};
+
+exports.wishlist_find_user_param = async (req, res, next, id) => {
+  try {
+    const user = await User.findById(id);
+
+    if (user) {
+      const userWishlist = await Wishlist.findOne({ owner: user._id })
+        .populate('productsList.product')
+        .populate('owner');
+
+      if (!userWishlist) {
+        return res.status(404).json({
+          title: 'Find User Wishlist',
+          success: false,
+          message: 'No wishlist for this user id.',
+        });
+      }
+
+      req.user = user;
+      req.userWishlist = userWishlist;
+      next();
+    } else {
+      return res.status(404).json({
+        title: 'Find User Cart',
+        success: false,
+        message: 'No user by this id',
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      title: 'Find User Wishlist',
+      success: false,
+      message: 'Error while retrieving user wishlist. ' + err.message,
+    });
+  }
+};
+
