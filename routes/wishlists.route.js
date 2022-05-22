@@ -10,4 +10,6 @@ router.param('userId', wishlist_controller.wishlist_find_user_param);
 
 router.get('/:userId', wishlist_controller.wishlist_details_user_get);
 
+router.post('/:userId/add', wishlist_controller.wishlist_add_product_post);
+
 module.exports = router;

@@ -88,3 +88,46 @@ exports.wishlist_details_user_get = async (req, res) => {
     wishlist: userWishlist,
   });
 };
+
+exports.wishlist_add_product_post = async (req, res) => {
+  const { productId } = req.body;
+  const { userWishlist } = req;
+
+  console.log(userWishlist);
+
+  try {
+    const product = userWishlist.productsList.find(
+      (item) => item.product._id == productId
+    );
+
+    if (!product) {
+      const updatedProductsList = [
+        ...userWishlist.productsList,
+        { product: productId },
+      ];
+
+      userWishlist.productsList = updatedProductsList;
+
+      const updatedUserWishlist = await userWishlist.save();
+
+      return res.status(200).json({
+        title: 'Add product to wishlist',
+        success: true,
+        message: 'The product was added to wishlist',
+        addedProduct: product,
+      });
+    }
+
+    return res.status(409).json({
+      title: 'Add product to wishlist',
+      success: false,
+      message: 'The product already exists in cart',
+    });
+  } catch (error) {
+    res.status(500).json({
+      title: 'Add product to wishlist',
+      success: false,
+      message: 'Error while adding product to wishlist. ' + err.message,
+    });
+  }
+};
