@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require('express');
 const router = express.Router();
 
 const cart_controller = require('../controllers/cart.controller');
@@ -16,5 +16,6 @@ router.post('/:userId/remove', cart_controller.cart_remove_product_post);
 
 router.post('/:userId/increase', cart_controller.cart_increase_quantity_post);
 router.post('/:userId/decrease', cart_controller.cart_decrease_quantity_post);
+router.post('/:userId/update', cart_controller.cart_update_quantity_post);
 
 module.exports = router;

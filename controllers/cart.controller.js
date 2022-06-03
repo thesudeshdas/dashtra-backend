@@ -92,7 +92,6 @@ exports.cart_details_user_get = async (req, res) => {
   });
 };
 
-
 exports.cart_add_product_post = async (req, res) => {
   const { productId, newTotal } = req.body;
   const { userCart } = req;
@@ -264,6 +263,53 @@ exports.cart_decrease_quantity_post = async (req, res) => {
       success: false,
       message:
         'Error while decreasing product quantity in cart. ' + err.message,
+    });
+  }
+};
+
+exports.cart_update_quantity_post = async (req, res) => {
+  const { productId, newQuantity, newTotal } = req.body;
+  const { userCart } = req;
+
+  try {
+    const product = userCart.productsList.find(
+      (item) => item.product._id == productId
+    );
+
+    if (!product) {
+      res.status(409).json({
+        title: 'Update product quantity in cart',
+        success: false,
+        message: 'The product does not exist in cart',
+      });
+    }
+
+    /* 
+     TODO - Can optimise here. check if the coming quantity is equalt the eisting one, 
+     if it is the same, there is no need to do anything. Also, check on FE that the same quantity button can not sedn the API
+    */
+    const updatedProductsList = userCart.productsList.map((item) =>
+      item.product._id == productId
+        ? { ...item._doc, quantity: newQuantity }
+        : item
+    );
+
+    userCart.productsList = updatedProductsList;
+    userCart.total = newTotal;
+
+    const updatedUserCart = await userCart.save();
+
+    res.status(200).json({
+      title: 'Update product quantity in cart',
+      success: true,
+      message: 'Product quantity updated',
+      updatedProductsList,
+    });
+  } catch (err) {
+    res.status(500).json({
+      title: 'Update product quantity in cart',
+      success: false,
+      message: 'Error while updating product quantity in cart. ' + err.message,
     });
   }
 };
