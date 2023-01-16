@@ -42,7 +42,7 @@ Dashtra is an eCommerce web app built as an one-stop solution for all footballin
 
   <div>
 
-**Cart**
+**Wishlist**
 
 - Get All Wishlist
 - Get Wishlist Details
