@@ -1,4 +1,4 @@
-# Catalyst Backend
+# Dashtra Backend
 
 Dashtra is an eCommerce web app built as an one-stop solution for all footballing needs
 
